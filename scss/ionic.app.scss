@@ -1,0 +1,96 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #387ef5 !default;
+$calm:                            #11c1f3 !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #ffc900 !default;
+$assertive:                       #ef473a !default;
+$royal:                           #886aea !default;
+$dark:                            #444 !default;
+*/
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+//Custom colors
+$energized:                     #ff9900 !default; //for clear-day days
+$calm:                          #3366cc !default; //for rain days
+$balanced:                      #666666 !default; //for cloudy days
+$assertive:                     #999999 !default; //for snow days
+$royal:                         #003366 !default; //for clear-nights
+$dark:                          #444 !default;
+
+.big-icon {
+    font-size: 250px;
+}
+
+ion-item i {
+    display: inline;
+    font-size: 50px;
+}
+
+ion-item div {
+    font-size: 15px;
+    color: #ffffff;
+}
+
+h2, h3 {
+    color: #ffffff !important;
+}
+
+h3 {
+    font-size: 3em !important;
+}
+
+ion-header-bar, .today-weather {
+    color: #ffffff;
+}
+
+.day-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.8s;
+}
+
+.day-details-clicked {
+    max-height: 200px;
+    transition: max-height 0.8s;
+}
+
+.rain-background {
+    background-color: $calm !important;
+}
+
+.clear-day-background {
+    background-color: $energized !important;
+}
+
+.cloudy-background {
+    background-color: $balanced !important;
+}
+
+.snow-background {
+    background-color: $assertive !important;
+}
+
+.clear-night-background {
+    background-color: $royal !important;
+}
+
+ion-item {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+ion-side-menu-content {
+    background-color: $dark !important;
+}
+
+// Include all of Ionic
+@import "../www/lib/ionic/scss/ionic";
