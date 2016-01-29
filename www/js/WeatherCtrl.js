@@ -1,6 +1,6 @@
 // Main Controller moved in different file suggested by Adam Vigneaux
 app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
-    ForecastFactory) {
+    ForecastFactory, SPEED_UNIT_CONSTANT) {
 
     var weather = this;
     var celsius = false;
