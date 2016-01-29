@@ -10,8 +10,8 @@ app.factory('ForecastFactory', function(ApiCallFactory) {
             state: normalizeState(data.currently.icon, true),
             high: Math.round(data.daily.data[0].temperatureMax),
             low: Math.round(data.daily.data[0].temperatureMin),
-            precipitation: data.daily.data[0].precipProbability,
-            humidity: data.daily.data[0].humidity,
+            precipitation: Math.round(data.daily.data[0].precipProbability * 100),
+            humidity: Math.round(data.daily.data[0].humidity * 100),
             feelsLike: Math.round(data.currently.apparentTemperature),
             windSpeed: Math.round(data.currently.windSpeed)
         };
@@ -24,8 +24,8 @@ app.factory('ForecastFactory', function(ApiCallFactory) {
                 state: normalizeState(data.daily.data[i].icon, false),
                 high: Math.round(data.daily.data[i].temperatureMax),
                 low: Math.round(data.daily.data[i].temperatureMin),
-                precipitation: data.daily.data[i].precipProbability,
-                humidity: data.daily.data[i].humidity,
+                precipitation: Math.round(data.daily.data[i].precipProbability * 100),
+                humidity: Math.round(data.daily.data[i].humidity * 100),
                 windSpeed: Math.round(data.daily.data[i].windSpeed)
             });
         };
