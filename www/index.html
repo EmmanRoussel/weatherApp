@@ -24,11 +24,7 @@
 
     <!-- Page's content -->
     <ion-side-menu-content>
-          <ion-header-bar class="bar bar-header" ng-class="{'bar-energized': weather.forecast.today.state == 'clear-day' || weather.forecast.today.state == 'partly-cloudy-day',
-            'bar-royal': weather.forecast.today.state == 'clear-night' || weather.forecast.today.state == 'partly-cloudy-night',
-            'bar-calm': weather.forecast.today.state == 'rain',
-            'bar-balanced': weather.forecast.today.state == 'cloudy',
-            'bar-assertive': weather.forecast.today.state == 'snow'}">
+          <ion-header-bar class="bar bar-header" ng-class="getBarColor(weather.forecast.today.state)">
               <button class="button" menu-toggle="left">
                   <i class="icon ion-navicon"></i>
               </button>
@@ -37,23 +33,11 @@
           <ion-content>
 
               <!-- Today's weather -->
-              <div class="today-weather"
-                ng-class="{'clear-day-background': weather.forecast.today.state == 'clear-day' || weather.forecast.today.state == 'partly-cloudy-day',
-                    'clear-night-background': weather.forecast.today.state == 'clear-night' || weather.forecast.today.state == 'partly-cloudy-night',
-                    'rain-background': weather.forecast.today.state == 'rain',
-                    'cloudy-background': weather.forecast.today.state == 'cloudy',
-                    'snow-background': weather.forecast.today.state == 'snow'}">
+              <div class="today-weather" ng-class="getColor(weather.forecast.today.state)">
                   <h2 class="text-center">{{weather.forecast.today.day | date:'EEEE'}}</h2>
                   <div class="row">
                       <div class="col col-50 text-center">
-                          <i class="icon big-icon"
-                            ng-class="{'ion-ios-sunny-outline': weather.forecast.today.state == 'clear-day',
-                                'ion-ios-partlysunny-outline': weather.forecast.today.state == 'partly-cloudy-day',
-                                'ion-ios-moon-outline': weather.forecast.today.state == 'clear-night',
-                                'ion-ios-cloudy-night-outline': weather.forecast.today.state == 'partly-cloudy-night',
-                                'ion-ios-rainy-outline': weather.forecast.today.state == 'rain',
-                                'ion-ios-cloudy-outline': weather.forecast.today.state == 'cloudy',
-                                'ion-ios-snowy': weather.forecast.today.state == 'snow'}">
+                          <i class="icon big-icon" ng-class="getIcon(weather.forecast.today.state)">
                             </i>
                       </div>
                       <div class="col col-50 col-center text-center">
@@ -62,13 +46,13 @@
                   </div>
                   <div class="row">
                       <div class="col text-center">Precipitation: </div>
-                      <div class="col">{{weather.forecast.today.precipitation * 100}}%</div>
+                      <div class="col">{{weather.forecast.today.precipitation}}%</div>
                       <div class="col text-center">Feels like: </div>
                       <div class="col">{{weather.forecast.today.feelsLike}}&#176;</div>
                   </div>
                   <div class="row">
                       <div class="col text-center">Humidity: </div>
-                      <div class="col">{{weather.forecast.today.humidity * 100}}%</div>
+                      <div class="col">{{weather.forecast.today.humidity}}%</div>
                       <div class="col text-center">Wind: </div>
                       <div class="col">{{weather.forecast.today.windSpeed}} {{weather.currentUnits.speed}}</div>
                   </div>
@@ -77,20 +61,12 @@
               <!-- Weather for the week -->
               <ion-list>
                   <div ng-repeat="day in weather.forecast.week" ng-click="clicked = !clicked">
-                      <ion-item class="day"
-                        ng-class="{'clear-day-background': day.state == 'clear-day' || day.state == 'partly-cloudy-day',
-                            'rain-background': day.state == 'rain',
-                            'cloudy-background': day.state == 'cloudy',
-                            'snow-background': day.state == 'snow'}">
+                      <ion-item class="day" ng-class="getColor(day.state)">
                           <div class="row row-no-padding">
                               <div class="col col-50 col-center">{{day.day | date: 'EEEE'}}</div>
                               <div class="col text-right">
                                   <i class="icon"
-                                    ng-class="{'ion-ios-sunny-outline': day.state == 'clear-day',
-                                        'ion-ios-partlysunny-outline': day.state == 'partly-cloudy-day',
-                                        'ion-ios-rainy-outline': day.state == 'rain',
-                                        'ion-ios-cloudy-outline': day.state == 'cloudy',
-                                        'ion-ios-snowy': day.state == 'snow'}">
+                                    ng-class="getIcon(day.state)">
                                     </i>
                               </div>
                               <div class="col text-center col-center">{{day.high}}&#176;</div>
@@ -99,13 +75,13 @@
                             ng-class="{'day-details-clicked': clicked, '': !clicked}">
                               <div class="row">
                                   <div class="col text-center">Precipitation: </div>
-                                  <div class="col">{{day.precipitation * 100}}%</div>
+                                  <div class="col">{{day.precipitation}}%</div>
                                   <div class="col text-center">Low: </div>
                                   <div class="col">{{day.low}}&#176;</div>
                               </div>
                               <div class="row">
                                   <div class="col text-center">Humidity: </div>
-                                  <div class="col">{{day.humidity * 100}}%</div>
+                                  <div class="col">{{day.humidity}}%</div>
                                   <div class="col text-center">Wind: </div>
                                   <div class="col">{{day.windSpeed}} {{weather.currentUnits.speed}}</div>
                               </div>

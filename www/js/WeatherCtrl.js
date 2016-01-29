@@ -64,6 +64,73 @@ app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
         });
     };
 
+    //Returns the corresponding background color css class to a day state
+    $scope.getColor = function(state) {
+        var background;
+
+        if(state == 'partly-cloudy-day') {
+            background = 'clear-day-background';
+        }
+        else if(state == 'partly-cloudy-night'){
+            background = 'clear-night-background';
+        }
+        else {
+            background = state + '-background';
+        }
+        return background;
+    };
+
+    //Returns the corresponding icon to a day state
+    $scope.getIcon = function(state) {
+        var icon;
+
+        if(state == 'clear-day') {
+            icon = 'ion-ios-sunny-outline';
+        }
+        else if(state == 'partly-cloudy-day') {
+            icon = 'ion-ios-partlysunny-outline';
+        }
+        else if(state == 'clear-night') {
+            icon = 'ion-ios-moon-outline';
+        }
+        else if(state == 'partly-cloudy-night') {
+            icon = 'ion-ios-cloudy-night-outline';
+        }
+        else if(state == 'rain') {
+            icon = 'ion-ios-rainy-outline';
+        }
+        else if(state == 'cloudy') {
+            icon = 'ion-ios-cloudy-outline';
+        }
+        else if(state == 'snow') {
+            icon = 'ion-ios-snowy';
+        }
+
+        return icon;
+    };
+
+    $scope.getBarColor = function(state) {
+        var color;
+
+        if(state == 'clear-day' || state == 'partly-cloudy-day') {
+            color = 'bar-energized';
+        }
+        else if(state == 'clear-night' || state == 'partly-cloudy-night') {
+            color = 'bar-royal';
+        }
+        else if(state == 'rain') {
+            color = 'bar-calm';
+        }
+        else if(state == 'cloudy') {
+            color = 'bar-balanced';
+        }
+        else if(state == 'snow') {
+            color = 'bar-assertive';
+        }
+
+        return color;
+    };
+
     /* Converts temperature from Celsius to Fahrenheit or
     from Fahrenheit to Celsius */
     function invertTempUnit(temp) {
