@@ -1,7 +1,9 @@
 // Factory that returns the forecast in the form of a single object
-app.factory('ForecastFactory', function(ApiCallFactory) {
+app.factory('ForecastFactory', function($ionicLoading, ApiCallFactory) {
     var forecast = {};
-
+    $ionicLoading.show({
+        template: '<ion-spinner icon="spiral"></ion-spinner>'
+    });
     ApiCallFactory.then(function (response) {
         var data = response.data;
         console.log(data);
@@ -29,6 +31,8 @@ app.factory('ForecastFactory', function(ApiCallFactory) {
                 windSpeed: Math.round(data.daily.data[i].windSpeed)
             });
         };
+
+        $ionicLoading.hide();
     }, function(error) {
         console.log(error);
     });
