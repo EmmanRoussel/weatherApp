@@ -1,9 +1,13 @@
 // Factory that returns the forecast in the form of a single object
-app.factory('ForecastFactory', function(ApiCallFactory, UnitsFactory, InvertUnitsFactory) {
+app.factory('ForecastFactory', function($ionicLoading, ApiCallFactory,
+    UnitsFactory, InvertUnitsFactory) {
     var forecast = {};
     var kmh = UnitsFactory.getSpeedUnit();
     var celsius = UnitsFactory.getTempUnit();
-    console.log(kmh + ' ' + celsius);
+
+    $ionicLoading.show({
+        template: '<ion-spinner icon="spiral"></ion-spinner>'
+    });
 
     ApiCallFactory.then(function (response) {
         var data = response.data;
@@ -56,8 +60,11 @@ app.factory('ForecastFactory', function(ApiCallFactory, UnitsFactory, InvertUnit
                 forecast.week[i-1].low = InvertUnitsFactory.invertTempUnit(forecast.week[i-1].low);
             }
         };
+
+        $ionicLoading.hide();
     }, function(error) {
         console.log(error);
+        $ionicLoading.hide();
     });
 
     /* Converts the state of a day to a known state if different */
