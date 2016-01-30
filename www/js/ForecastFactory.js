@@ -1,10 +1,15 @@
 // Factory that returns the forecast in the form of a single object
-app.factory('ForecastFactory', function(ApiCallFactory) {
+app.factory('ForecastFactory', function(ApiCallFactory, UnitsFactory, InvertUnitsFactory) {
     var forecast = {};
+    var kmh = UnitsFactory.getSpeedUnit();
+    var celsius = UnitsFactory.getTempUnit();
+    console.log(kmh + ' ' + celsius);
 
     ApiCallFactory.then(function (response) {
         var data = response.data;
         console.log(data);
+
+        //today
         forecast.today = {
             day: data.daily.data[0].time * 1000,
             state: normalizeState(data.currently.icon, true),
@@ -16,6 +21,18 @@ app.factory('ForecastFactory', function(ApiCallFactory) {
             windSpeed: Math.round(data.currently.windSpeed)
         };
 
+        //If the unit saved is km/h, convert windSpeed to km/h
+        if(kmh) {
+            forecast.today.windSpeed = InvertUnitsFactory.invertSpeedUnit(forecast.today.windSpeed);
+        }
+        //If the unit saved is celsius, convert all temperatures to celsius
+        if(celsius) {
+            forecast.today.high = InvertUnitsFactory.invertTempUnit(forecast.today.high);
+            forecast.today.low = InvertUnitsFactory.invertTempUnit(forecast.today.low);
+            forecast.today.feelsLike = InvertUnitsFactory.invertTempUnit(forecast.today.feelsLike);
+        }
+
+        //week
         forecast.week = new Array();
 
         for (var i = 1; i < 7; i++) {
@@ -28,6 +45,16 @@ app.factory('ForecastFactory', function(ApiCallFactory) {
                 humidity: Math.round(data.daily.data[i].humidity * 100),
                 windSpeed: Math.round(data.daily.data[i].windSpeed)
             });
+
+            //If the unit saved is km/h, convert windSpeed to km/h
+            if(kmh) {
+                forecast.week[i-1].windSpeed = InvertUnitsFactory.invertSpeedUnit(forecast.week[i-1].windSpeed);
+            }
+            //If the unit saved is celsius, convert all temperatures to celsius
+            if(celsius) {
+                forecast.week[i-1].high = InvertUnitsFactory.invertTempUnit(forecast.week[i-1].high);
+                forecast.week[i-1].low = InvertUnitsFactory.invertTempUnit(forecast.week[i-1].low);
+            }
         };
     }, function(error) {
         console.log(error);

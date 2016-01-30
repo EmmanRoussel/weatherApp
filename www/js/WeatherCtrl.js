@@ -1,11 +1,10 @@
 // Main Controller moved in different file suggested by Adam Vigneaux
 app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
-    ForecastFactory, SPEED_UNIT_CONSTANT) {
+    ForecastFactory, UnitsFactory, InvertUnitsFactory) {
 
     var weather = this;
-    var celsius = false;
-    var kmh = false;
-    var SPEED_UNIT_CONSTANT = 0.62137;
+    var initialSpeedUnit;
+    var initialTempUnit;
 
     weather.forecast = ForecastFactory;
 
@@ -16,28 +15,43 @@ app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
 
     $scope.speedUnitList = [
         { text: "Mph", value: "mph" },
-        { text: "Km/h", value: "kmh" }
+        { text: "Km/h", value: "km/h" }
     ];
 
+    //Verify what units are used and set them accordingly in the $scope
+    if(UnitsFactory.getSpeedUnit()) {
+        initialSpeedUnit = 'km/h';
+    }
+    else {
+        initialSpeedUnit = 'mph';
+    }
+    if(UnitsFactory.getTempUnit()) {
+        initialTempUnit = 'c';
+    }
+    else {
+        initialTempUnit = 'f';
+    }
     $scope.data = {
-        temperature: 'f',
-        speed: 'mph'
+        temperature: initialTempUnit,
+        speed: initialSpeedUnit
     };
-
     weather.currentUnits = {
-        temperature: 'F',
-        speed: 'mph'
+        temperature: initialTempUnit,
+        speed: initialSpeedUnit
     };
 
     $scope.speedUnitChange = function(item) {
-        kmh = !kmh;
+        kmh = !UnitsFactory.getSpeedUnit();
+
+        //save
+        UnitsFactory.saveSpeedUnit(kmh);
 
         //today
-        weather.forecast.today.windSpeed = invertSpeedUnit(weather.forecast.today.windSpeed);
+        weather.forecast.today.windSpeed = InvertUnitsFactory.invertSpeedUnit(weather.forecast.today.windSpeed);
 
         //week
         weather.forecast.week.forEach(function(day) {
-            day.windSpeed = invertSpeedUnit(day.windSpeed);
+            day.windSpeed = InvertUnitsFactory.invertSpeedUnit(day.windSpeed);
         });
 
         //unit
@@ -50,17 +64,20 @@ app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
     };
 
     $scope.temperatureUnitChange = function(item) {
-        celsius = !celsius;
+        celsius = !UnitsFactory.getTempUnit();
+
+        //save
+        UnitsFactory.saveTempUnit(celsius);
 
         //today
-        weather.forecast.today.high = invertTempUnit(weather.forecast.today.high);
-        weather.forecast.today.low = invertTempUnit(weather.forecast.today.low);
-        weather.forecast.today.feelsLike = invertTempUnit(weather.forecast.today.feelsLike);
+        weather.forecast.today.high = InvertUnitsFactory.invertTempUnit(weather.forecast.today.high);
+        weather.forecast.today.low = InvertUnitsFactory.invertTempUnit(weather.forecast.today.low);
+        weather.forecast.today.feelsLike = InvertUnitsFactory.invertTempUnit(weather.forecast.today.feelsLike);
 
         //week
         weather.forecast.week.forEach(function(day) {
-            day.high = invertTempUnit(day.high);
-            day.low = invertTempUnit(day.low);
+            day.high = InvertUnitsFactory.invertTempUnit(day.high);
+            day.low = InvertUnitsFactory.invertTempUnit(day.low);
         });
     };
 
@@ -129,32 +146,5 @@ app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
         }
 
         return color;
-    };
-
-    /* Converts temperature from Celsius to Fahrenheit or
-    from Fahrenheit to Celsius */
-    function invertTempUnit(temp) {
-        var newTemp;
-
-        if(celsius) {
-            newTemp = Math.round((temp - 32) * (5/9));
-        }
-        else {
-            newTemp = Math.round((temp * 1.8) + 32);
-        }
-        return newTemp;
-    };
-
-    /* Converts speed from mph to km/h or from km/h to mph */
-    function invertSpeedUnit(speed) {
-        var newSpeed;
-
-        if(kmh) {
-            newTemp = Math.round(speed/SPEED_UNIT_CONSTANT);
-        }
-        else {
-            newTemp = Math.round(speed * SPEED_UNIT_CONSTANT);
-        }
-        return newTemp;
     };
 });
