@@ -1,4 +1,4 @@
 # weatherApp
 Simple Weather app developed for the CPS371 class at Gordon College.
 
-Built with the Ionic Framework.
+Built with the Ionic Framework and uses the Forecast API.
