@@ -25,6 +25,7 @@ $balanced:                      #666666 !default; //for cloudy days
 $assertive:                     #999999 !default; //for snow days
 $royal:                         #003366 !default; //for clear-nights
 $dark:                          #444 !default;
+$light:                         #fff !default;
 
 .big-icon {
     font-size: 250px;
@@ -90,6 +91,11 @@ ion-item {
 
 ion-side-menu-content {
     background-color: $dark !important;
+}
+
+.powered-link {
+    text-decoration: none;
+    font-size: 0.8em;
 }
 
 // Include all of Ionic
