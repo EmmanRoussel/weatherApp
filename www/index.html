@@ -33,7 +33,8 @@
 
     <!-- Page's content -->
     <ion-side-menu-content>
-          <ion-header-bar class="bar bar-header" ng-class="getBarColor(weather.forecast.today.state)">
+          <ion-header-bar class="bar bar-header" align-title="center"
+            ng-class="getBarColor(weather.forecast.today.state)">
               <button class="button" menu-toggle="left">
                   <i class="icon ion-navicon"></i>
               </button>
@@ -103,7 +104,7 @@
 
       <!-- Side Menu -->
       <ion-side-menu side="left">
-          <ion-header-bar class="bar-dark">
+          <ion-header-bar class="bar-dark" align-title="center">
               <h1 class="title">Units</h1>
           </ion-header-bar>
           <ion-content>
@@ -128,12 +129,12 @@
                   {{ unit.text }}
                 </ion-radio>
               </div>
-              <div class="bar bar-footer bar-dark">
-                  <div class="title">
-                      <a href="http://forecast.io/" class="powered-link">Powered by Forecast</a>
-                  </div>
-              </div>
           </ion-content>
+          <ion-footer-bar class="bar-dark" align-title="center">
+              <a href="http://forecast.io/">
+                  <h2 class="title">Powered by Forecast</h2>
+              </a>
+          </ion-footer-bar>
       </ion-side-menu>
      </ion-side-menus>
   </body>
