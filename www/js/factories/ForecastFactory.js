@@ -17,11 +17,9 @@ app.factory('ForecastFactory', function($ionicLoading, ApiCallFactory,
         forecast.today = {
             day: data.daily.data[0].time * 1000,
             state: normalizeState(data.currently.icon, true),
-            high: Math.round(data.daily.data[0].temperatureMax),
-            low: Math.round(data.daily.data[0].temperatureMin),
-            precipitation: Math.round(data.daily.data[0].precipProbability * 100),
-            humidity: Math.round(data.daily.data[0].humidity * 100),
-            feelsLike: Math.round(data.currently.apparentTemperature),
+            precipitation: Math.round(data.currently.precipProbability * 100),
+            humidity: Math.round(data.currently.humidity * 100),
+            currentTemp: Math.round(data.currently.apparentTemperature),
             windSpeed: Math.round(data.currently.windSpeed)
         };
 
@@ -29,17 +27,15 @@ app.factory('ForecastFactory', function($ionicLoading, ApiCallFactory,
         if(kmh) {
             forecast.today.windSpeed = InvertUnitsFactory.invertSpeedUnit(forecast.today.windSpeed);
         }
-        //If the unit saved is celsius, convert all temperatures to celsius
+        //If the unit saved is celsius, convert current temperature to celsius
         if(celsius) {
-            forecast.today.high = InvertUnitsFactory.invertTempUnit(forecast.today.high);
-            forecast.today.low = InvertUnitsFactory.invertTempUnit(forecast.today.low);
-            forecast.today.feelsLike = InvertUnitsFactory.invertTempUnit(forecast.today.feelsLike);
+            forecast.today.currentTemp = InvertUnitsFactory.invertTempUnit(forecast.today.currentTemp);
         }
 
         //week
         forecast.week = new Array();
 
-        for (var i = 1; i < 7; i++) {
+        for (var i = 0; i < 7; i++) {
             forecast.week.push({
                 day: data.daily.data[i].time * 1000,
                 state: normalizeState(data.daily.data[i].icon, false),
@@ -52,12 +48,12 @@ app.factory('ForecastFactory', function($ionicLoading, ApiCallFactory,
 
             //If the unit saved is km/h, convert windSpeed to km/h
             if(kmh) {
-                forecast.week[i-1].windSpeed = InvertUnitsFactory.invertSpeedUnit(forecast.week[i-1].windSpeed);
+                forecast.week[i].windSpeed = InvertUnitsFactory.invertSpeedUnit(forecast.week[i].windSpeed);
             }
             //If the unit saved is celsius, convert all temperatures to celsius
             if(celsius) {
-                forecast.week[i-1].high = InvertUnitsFactory.invertTempUnit(forecast.week[i-1].high);
-                forecast.week[i-1].low = InvertUnitsFactory.invertTempUnit(forecast.week[i-1].low);
+                forecast.week[i].high = InvertUnitsFactory.invertTempUnit(forecast.week[i].high);
+                forecast.week[i].low = InvertUnitsFactory.invertTempUnit(forecast.week[i].low);
             }
         };
 

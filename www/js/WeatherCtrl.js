@@ -1,4 +1,5 @@
-// Main Controller moved in different file suggested by Adam Vigneaux
+// Main Controller for the app
+// Controller moved in different file suggested by Adam Vigneaux
 app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
     ForecastFactory, UnitsFactory, InvertUnitsFactory) {
 
@@ -6,17 +7,18 @@ app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
     var initialSpeedUnit;
     var initialTempUnit;
 
-    weather.forecast = ForecastFactory;
-
     $scope.temperatureUnitList = [
         { text: "Fahrenheit", value: "f" },
-        { text: "Celcius", value: "c" }
+        { text: "Celsius", value: "c" }
     ];
 
     $scope.speedUnitList = [
         { text: "Mph", value: "mph" },
         { text: "Km/h", value: "km/h" }
     ];
+
+    //Initialization
+    weather.forecast = ForecastFactory;
 
     //Verify what units are used and set them accordingly in the $scope
     if(UnitsFactory.getSpeedUnit()) {
@@ -70,9 +72,7 @@ app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
         UnitsFactory.saveTempUnit(celsius);
 
         //today
-        weather.forecast.today.high = InvertUnitsFactory.invertTempUnit(weather.forecast.today.high);
-        weather.forecast.today.low = InvertUnitsFactory.invertTempUnit(weather.forecast.today.low);
-        weather.forecast.today.feelsLike = InvertUnitsFactory.invertTempUnit(weather.forecast.today.feelsLike);
+        weather.forecast.today.currentTemp = InvertUnitsFactory.invertTempUnit(weather.forecast.today.currentTemp);
 
         //week
         weather.forecast.week.forEach(function(day) {
@@ -81,7 +81,8 @@ app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
         });
     };
 
-    //Returns the corresponding background color css class to a day state
+    // Returns the corresponding background color css class to a day state
+    // param: state: String representing the weather condition
     $scope.getColor = function(state) {
         var background;
 
@@ -97,52 +98,61 @@ app.controller('WeatherCtrl', function($scope, $ionicSideMenuDelegate,
         return background;
     };
 
-    //Returns the corresponding icon to a day state
+    // Returns the corresponding icon to a day state
+    // param: state: String representing the weather condition
     $scope.getIcon = function(state) {
         var icon;
 
-        if(state == 'clear-day') {
-            icon = 'ion-ios-sunny-outline';
-        }
-        else if(state == 'partly-cloudy-day') {
-            icon = 'ion-ios-partlysunny-outline';
-        }
-        else if(state == 'clear-night') {
-            icon = 'ion-ios-moon-outline';
-        }
-        else if(state == 'partly-cloudy-night') {
-            icon = 'ion-ios-cloudy-night-outline';
-        }
-        else if(state == 'rain') {
-            icon = 'ion-ios-rainy-outline';
-        }
-        else if(state == 'cloudy') {
-            icon = 'ion-ios-cloudy-outline';
-        }
-        else if(state == 'snow') {
-            icon = 'ion-ios-snowy';
+        switch (state) {
+            case 'clear-day':
+                icon = 'ion-ios-sunny-outline';
+                break;
+            case 'partly-cloudy-day':
+                icon = 'ion-ios-partlysunny-outline';
+                break;
+            case 'clear-night':
+                icon = 'ion-ios-moon-outline';
+                break;
+            case 'partly-cloudy-night':
+                icon = 'ion-ios-cloudy-night-outline';
+                break;
+            case 'rain':
+                icon = 'ion-ios-rainy-outline';
+                break;
+            case 'cloudy':
+                icon = 'ion-ios-cloudy-outline';
+                break;
+            case 'snow':
+                icon = 'ion-ios-snowy';
+                break;
         }
 
         return icon;
     };
 
+    // Returns the corresponding bar color to a day state
+    // param: state: String representing the weather condition
     $scope.getBarColor = function(state) {
         var color;
 
-        if(state == 'clear-day' || state == 'partly-cloudy-day') {
-            color = 'bar-energized';
-        }
-        else if(state == 'clear-night' || state == 'partly-cloudy-night') {
-            color = 'bar-royal';
-        }
-        else if(state == 'rain') {
-            color = 'bar-calm';
-        }
-        else if(state == 'cloudy') {
-            color = 'bar-balanced';
-        }
-        else if(state == 'snow') {
-            color = 'bar-assertive';
+        switch (state) {
+            case 'clear-day':
+            case 'partly-cloudy-day':
+                color = 'bar-energized';
+                break;
+            case 'clear-night':
+            case 'partly-cloudy-night':
+                color = 'bar-royal';
+                break;
+            case 'rain':
+                color = 'bar-calm';
+                break;
+            case 'cloudy':
+                color = 'bar-balanced';
+                break;
+            case 'snow':
+                color = 'bar-assertive';
+                break;
         }
 
         return color;
